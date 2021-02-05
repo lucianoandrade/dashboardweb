@@ -1,0 +1,222 @@
+input AcionamentoRequestDto {
+  COD_RECUP: Int!
+  COD_GROUP: Int!
+  date: DateTime!
+  hour: Int!
+  qtd_acionamentos: Int!
+  positive: Boolean!
+}
+
+# A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+scalar DateTime
+
+type GetCadBaseDto {
+  number: Int!
+  dbName: String!
+}
+
+type GetTokenResponseDto {
+  token: String!
+}
+
+type GroupComparative {
+  DATA: String
+  value: Float!
+  HORA: String
+}
+
+type MetasDto {
+  META_QTDACIONAMENTOSCPF: Int!
+  META_QTDACIONAMENTOSPOSITIVOSCPF: Int!
+  META_QTDPROMESSASCPF: Int!
+  META_QTDACIONAMENTOSCONTRATO: Int!
+  META_QTDACIONAMENTOSPOSITIVOSCONTRATO: Int!
+  META_QTDPROMESSASCONTRATO: Int!
+  META_VALORPROMESSAS: Int!
+  META_VALORPAGAMENTOS: Float!
+  META_EFETIVIDADEACIONAMENTOS: Float!
+  PISO_QTDACIONAMENTOSCPF: Int!
+  PISO_QTDACIONAMENTOSPOSITIVOSCPF: Int!
+  PISO_QTDPROMESSASCPF: Int!
+  PISO_QTDACIONAMENTOSCONTRATO: Int!
+  PISO_QTDACIONAMENTOSPOSITIVOSCONTRATO: Int!
+  PISO_QTDPROMESSASCONTRATO: Int!
+  PISO_VALORPROMESSAS: Int!
+  PISO_VALORPAGAMENTOS: Float!
+  PISO_EFETIVIDADEACIONAMENTOS: Float!
+  SUPER_QTDACIONAMENTOSCPF: Int!
+  SUPER_QTDACIONAMENTOSPOSITIVOSCPF: Int!
+  SUPER_QTDPROMESSASCPF: Int!
+  SUPER_QTDACIONAMENTOSCONTRATO: Int!
+  SUPER_QTDACIONAMENTOSPOSITIVOSCONTRATO: Int!
+  SUPER_QTDPROMESSASCONTRATO: Int!
+  SUPER_VALORPROMESSAS: Int!
+  SUPER_VALORPAGAMENTOS: Float!
+  SUPER_EFETIVIDADEACIONAMENTOS: Float!
+}
+
+type Mutation {
+  createAcionamento(acionamento: AcionamentoRequestDto!): String!
+  createPromessa(promessa: PromessaRequestDto!): String!
+}
+
+type OperatorComparative {
+  DATA: String
+  NOME_RECUP: String!
+  COD_RECUP: Float
+  value: Float!
+  HORA: String
+}
+
+input PromessaRequestDto {
+  COD_RECUP: Int!
+  COD_GROUP: Int!
+  date: DateTime!
+  hour: Int!
+  QTD_CONTRATOS: Int!
+  VALOR_TOTAL: Float!
+}
+
+type Query {
+  getOperatorDetail(request: RequestUserDetail!): ResponseUserDetail!
+  getOperatorHistory(request: RequestUserHistory!): ResponseUserHistory!
+  listGroups(request: RequestListGroupDto!): [ResponseListGroupDto!]!
+  getComparativeGroups(
+    request: RequestComparativeGroup!
+  ): [ResponseComparativeGroup!]!
+  getListOperatorsByGroup(
+    request: RequestListOperatorByGroup!
+  ): [ResponseListOperatorByGroup!]!
+  getComparativeOperatorsByGroup(
+    request: RequestComparativeOperatorByGroup!
+  ): [ResponseComparativeOperatorByGroup!]!
+  getConnections: [GetCadBaseDto!]!
+  login(number: Float!, senha: String!, login: String!): SigninResponseDto!
+  getToken(number: Float!, senha: String!, login: String!): GetTokenResponseDto!
+}
+
+input RequestComparativeGroup {
+  param: String!
+  initDate: String!
+  endDate: String!
+  COD_RECUP: Int!
+  comparativeType: String!
+}
+
+input RequestComparativeOperatorByGroup {
+  param: String!
+  initDate: String!
+  endDate: String!
+  COD_GROUP: Int!
+  comparativeType: String!
+}
+
+input RequestListGroupDto {
+  param: String!
+  initDate: String!
+  endDate: String!
+  COD_RECUP: Int!
+  COD_GROUP: Int!
+}
+
+input RequestListOperatorByGroup {
+  param: String!
+  initDate: String!
+  endDate: String!
+  COD_GROUP: Int!
+  token_license: String!
+  licenseApiUrl: String!
+}
+
+input RequestUserDetail {
+  id: Float!
+}
+
+input RequestUserHistory {
+  param: String!
+  initDate: String!
+  endDate: String!
+  COD_RECUP: Float!
+  historyType: String!
+}
+
+type ResponseComparativeGroup {
+  groupName: String!
+  groupArray: [GroupComparative!]!
+}
+
+type ResponseComparativeOperatorByGroup {
+  groupArray: [OperatorComparative!]!
+}
+
+type ResponseListGroupDto {
+  groupName: String!
+  COD_GRUPO: Int!
+  acionamentoTotal: Int!
+  acionamentoPositive: Int!
+  promessaTotal: Int!
+  promessaValue: Float!
+  paymentValue: Float!
+  percentage: Float!
+  metas: MetasDto!
+}
+
+type ResponseListOperatorByGroup {
+  operatorName: String!
+  operatorLogin: String!
+  COD_RECUP: Float!
+  urlAvatar: String!
+  isOnline: Boolean
+  metaAtendimento: Float
+  workTime: Float
+  pauseLimit: Float!
+  pauseTime: Float!
+  acionamentoTotal: Int!
+  acionamentoPositive: Int!
+  promessaTotal: Int!
+  promessaValue: Float!
+  paymentValue: Float!
+  percentage: Float!
+  metas: MetasDto!
+}
+
+type ResponseUserDetail {
+  NOME_FILIAL: String
+  COD_RECUP: Int!
+  LOGIN_RECUP: String
+  TIPO_USUARIO: String
+  CELULAR_RECUP: Int!
+  HORA_ENTRADA: String
+  HORA_SAIDA: String
+  TIPOINTERVALO_CAR: String
+  EMAIL_RECUP: String
+  NOME_RECUP: String
+  RAMAL: String
+}
+
+type ResponseUserHistory {
+  groupArray: [UserHistory!]!
+  metas: MetasDto!
+}
+
+type SigninResponseDto {
+  token: String!
+  login: String!
+  name: String!
+  email: String!
+  group_name: String
+  token_license: String!
+  COD_RECUP: Float!
+  nivelGroup: Float!
+  COD_GROUP: Float!
+  imageB64: String!
+  permission: [String!]!
+  licenseApiUrl: String!
+}
+
+type UserHistory {
+  DATA: String
+  value: Float!
+  HORA: String
+}
+

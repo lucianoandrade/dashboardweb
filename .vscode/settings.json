@@ -1,0 +1,10 @@
+{
+  "editor.tabSize": 2,
+  "eslint.alwaysShowStatus": true,
+  "eslint.packageManager": "yarn",
+  "git.autofetch": true,
+  "prettier.packageManager": "yarn",
+  "prettier.singleQuote": true,
+  "editor.formatOnSave": true,
+  "typescript.tsdk": "node_modules/typescript/lib"
+}

@@ -1,0 +1,336 @@
+# Exposes a URL that specifies the behaviour of this scalar.
+directive @specifiedBy(
+  # The URL that specifies the behaviour of this scalar.
+  url: String!
+) on SCALAR
+type DadosDeGrafico {
+  chave: String
+  valor: String
+}
+
+type DashboardAtivos {
+  indicador: String!
+  values: [DashboardAtivosValues!]!
+}
+
+type DashboardAtivosValues {
+  acao: String
+  valor: Float
+  hora: Float
+  minuto: Float
+}
+
+type DashboardDesistencia {
+  quantidade: Float
+  tipoNegociacao: String
+  credor: String
+  faixa: String
+  percentual: Float
+}
+
+type DashboardDetalhamentoDispositivosUtilizadosDTO {
+  dispositivosUtilizados: DashboardsDetalhesDispositivosUtilizados
+  navegadoresUtilizados: [DashboardsDetalhesNavegadores!]
+}
+
+type DashboardDetalhamentoNegociadas {
+  cpf: String
+  data: String
+  valor: Float
+  parcelamento: Float
+  dt_ult_acesso: String
+}
+
+type DashboardDipositivosUtilizados {
+  tipoIndicador: String!
+  valor: Float!
+  variacao: Float!
+}
+
+type DashboardMaisAcessados {
+  porHora: [DashboardMaisAcessadosPorHora!]
+  porData: [DashboardMaisAcessadosPorData!]
+}
+
+type DashboardMaisAcessadosPorData {
+  acao: String
+  data: String
+  qtd: Float
+}
+
+type DashboardMaisAcessadosPorHora {
+  acao: String
+  hora: String
+  qtd: Float
+}
+
+type DashboardNegociadas {
+  porHora: [DashboardNegociadasHora!]
+  porData: [DashboardNegociadasData!]
+  lista: [DashboardNegociadasLista!]
+}
+
+type DashboardNegociadasAR {
+  valor: String
+  chave: String
+}
+
+type DashboardNegociadasData {
+  array: [DashboardNegociadasAR!]
+  descricao: String
+}
+
+type DashboardNegociadasHora {
+  array: [DashboardNegociadasAR!]
+  descricao: String
+}
+
+type DashboardNegociadasLista {
+  quantidade: Float
+  credor: String
+  faixa: String
+  valor: Float
+  parcelamento: Float
+}
+
+type DashboardOrigemCampanha {
+  granulado: [DashboardOrigemCampanhaGranulado!]
+  consolidado: [DashboardOrigemCampanhaPorDataConsolidado!]
+}
+
+type DashboardOrigemCampanhaDetalhes {
+  cpf: String
+  data: String
+  vlr_negociado: Float
+  qtd_negociacoes: Float
+  qtd_boletos: Float
+  vlr_boletos: Float
+  qtd_pix: Float
+  vlr_pix: Float
+  qtd_acessos: Float
+  dt_ult_acesso: DateTime
+}
+
+type DashboardOrigemCampanhaGranulado {
+  identificador: String
+  valores: [DadosDeGrafico!]
+}
+
+type DashboardOrigemCampanhaPorDataConsolidado {
+  urlEntrada: String
+  qtdAcessos: Float
+  qtdNegociacoes: Float
+  vlrNegociacoes: Float
+  qtdBoletos: Float
+  vlrBoletos: Float
+  qtdPix: Float
+  vlrPix: Float
+}
+
+type DashboardResumo {
+  tipoIndicador: String!
+  valor: Float!
+  variacao: Float
+}
+
+type DashboardResumoComHora {
+  tipoIndicador: String!
+  valores: [Hours!]!
+}
+
+type DashboardsDetalhesDispositivos {
+  identificador: String
+  array: [DashboardsDetalhesDispositivosData!]
+}
+
+type DashboardsDetalhesDispositivosData {
+  chave: String
+  valor: Float
+}
+
+type DashboardsDetalhesDispositivosUtilizados {
+  porHora: [DashboardsDetalhesDispositivos!]
+  porData: [DashboardsDetalhesDispositivos!]
+}
+
+type DashboardsDetalhesNavegadores {
+  chave: String
+  valor: Float
+}
+
+type DashboardTop10NegociacoesObj {
+  quantidade: Float
+  tipoNegociacao: String
+  credor: String
+  faixa: String
+  valor: Float
+  plano: Float
+}
+
+type DashboardTop10OrigemCampanha {
+  url_entrada: String
+  qtd: Float
+}
+
+# A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+scalar DateTime
+
+type DetailActiveNow {
+  acao: String
+  creditor: String
+  hora: Float
+  valor: Float
+  minuto: Float
+}
+
+type DetailActiveNowHour {
+  indicador: String!
+  values: [DetailActiveNow!]!
+}
+
+type Hours {
+  valor: Float
+  hora: String
+  dia: String
+}
+
+input InsertNegotiationModel {
+  creditor: String!
+  dealType: Float!
+  plan: Float!
+  dealValue: Float!
+  delay: Float!
+}
+
+type Mutation {
+  setPayment(options: PaymentInput!): String
+  setNavigation(options: NavigationInput!): String
+  setNegotiation(negotiation: InsertNegotiationModel!): String
+}
+
+input NavigationInput {
+  action: String!
+  creditor: String
+  dealType: Float
+  plan: Float
+  dealValue: Float
+  delay: Float
+}
+
+input PaymentInput {
+  paymentType: Float!
+  billetType: Float!
+  creditor: String!
+  portion: Float!
+  plan: Float!
+  value: Float!
+  dueDate: DateTime!
+}
+
+type Query {
+  getHello: String!
+  testQuery: String
+  getTopTenByAccess(
+    finalDate: String!
+    initialDate: String!
+  ): [TopTenByAccessModel!]!
+  dashboardResumo(finalDate: String!, initialDate: String!): [DashboardResumo!]!
+  ativosAgora: [DashboardAtivos!]!
+  usuariosPorDiaDaSemanaEHora(
+    finalDate: String!
+    initialDate: String!
+  ): [UsuariosPorDiaDaSemanaEHoraModel!]!
+  resumoGraficoPropostas(
+    finalDate: String!
+    initialDate: String!
+  ): [DashboardResumoComHora!]!
+  resumoGraficoAcordos(
+    finalDate: String!
+    initialDate: String!
+  ): [DashboardResumoComHora!]!
+  resumoUsuariosLogados(
+    finalDate: String!
+    initialDate: String!
+  ): [DashboardResumoComHora!]!
+  resumoSessions(
+    finalDate: String!
+    initialDate: String!
+  ): [DashboardResumoComHora!]!
+  resumoGraficoBoletos(
+    finalDate: String!
+    initialDate: String!
+  ): [DashboardResumoComHora!]!
+  resumoGraficoPagamentos(
+    finalDate: String!
+    initialDate: String!
+  ): [DashboardResumoComHora!]!
+  dashboardDesistencias(
+    finalDate: String!
+    initialDate: String!
+  ): [DashboardDesistencia!]!
+  dispositivosUtilizados(
+    finalDate: String!
+    initialDate: String!
+  ): [DashboardDipositivosUtilizados!]!
+  dashboardTop10Negociacoes(
+    finalDate: String!
+    initialDate: String!
+  ): [DashboardTop10NegociacoesObj!]!
+  dashboardMaisAcessados(
+    finalDate: String!
+    initialDate: String!
+  ): DashboardMaisAcessados!
+  dashboardOrigemCampanha(
+    finalDate: String!
+    initialDate: String!
+  ): DashboardOrigemCampanha!
+  dashboardMaisNegociados(
+    finalDate: String!
+    initialDate: String!
+  ): DashboardNegociadas!
+  dashboardDetalhamentoDispositivosUtilizados(
+    finalDate: String!
+    initialDate: String!
+  ): DashboardDetalhamentoDispositivosUtilizadosDTO!
+  dashboardOrigemCampanhaDetalhes(
+    page: Float!
+    url_entrada: String!
+    finalDate: String!
+    initialDate: String!
+  ): [DashboardOrigemCampanhaDetalhes!]!
+  dashboardMaisNegociadosDetalhes(
+    page: Float!
+    parcelamento: Float!
+    maximoAtraso: Float!
+    minimoAtraso: Float!
+    credor: String!
+    finalDate: String!
+    initialDate: String!
+  ): [DashboardDetalhamentoNegociadas!]!
+  dashboardTop10OrigemCampanha(
+    finalDate: String!
+    initialDate: String!
+  ): [DashboardTop10OrigemCampanha!]!
+  detailActiveNow(page: Float!): [DetailActiveNowHour!]!
+}
+
+type TopTenByAccessModel {
+  action: String!
+  displayQuantity: Float!
+}
+
+type UsuariosPorDiaDaSemanaEHoraModel {
+  diaDaSemana: WeekDay!
+  horas: [Hours!]!
+}
+
+# Dia da semana
+enum WeekDay {
+  Domingo
+  Segunda
+  Terca
+  Quarta
+  Quinta
+  Sexta
+  Sabado
+}

@@ -1,0 +1,1 @@
+window.env = { SRCWEBAPI: 'http://10.10.10.101:3000', LICENSEAPI: 'undefined' }
